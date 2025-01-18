@@ -24,7 +24,29 @@
     
     <!-- Plotly Graph Container -->
     <div id="graph-container" style="width:100%; height:500px;"></div>
+    <!-- Add Combined Chart Button -->
+    <button id="combined-chart-btn">View Combined Chart</button>
 
+    <script>
+        $(document).ready(function () {
+            // Event listener for the combined chart button
+            $('#combined-chart-btn').on('click', function () {
+                $.ajax({
+                    url: '/combined_chart',
+                    type: 'GET',
+                    success: function (response) {
+                        // Render the combined Plotly graph
+                        const graphJSON = JSON.parse(response);
+                        Plotly.newPlot('graph-container', graphJSON.data, graphJSON.layout);
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                        alert('Failed to load the combined chart.');
+                    }
+                });
+            });
+        });
+    </script>    
     <script>
         // Function to handle form submission and update the graph
         $(document).ready(function () {
