@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TSX Analysis Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <h1>TSX Analysis Dashboard</h1>
+    
+    <!-- Dropdown for selecting indicators -->
+    <form id="indicator-form">
+        <label for="indicator">Select Indicator:</label>
+        <select id="indicator" name="indicator">
+            <option value="TSX">TSX</option>
+            <option value="FX">FX (CAD/USD)</option>
+            <option value="Inflation">Inflation</option>
+        </select>
+        <button type="submit">Update Graph</button>
+    </form>
+    
+    <!-- Plotly Graph Container -->
+    <div id="graph-container" style="width:100%; height:500px;"></div>
+
+    <script>
+        // Function to handle form submission and update the graph
+        $(document).ready(function () {
+            $('#indicator-form').on('submit', function (e) {
+                e.preventDefault(); // Prevent form from refreshing the page
+                
+                // Get selected indicator
+                const selectedIndicator = $('#indicator').val();
+                
+                // Send POST request to Flask endpoint
+                $.ajax({
+                    url: '/update_chart',
+                    type: 'POST',
+                    data: { indicator: selectedIndicator },
+                    success: function (response) {
+                        // Render the Plotly graph
+                        const graphJSON = JSON.parse(response);
+                        Plotly.newPlot('graph-container', graphJSON.data, graphJSON.layout);
+                    },
+                    error: function (error) {
+                        console.error('Error:', error);
+                        alert('Failed to load the graph.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
