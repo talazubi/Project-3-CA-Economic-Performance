@@ -26,6 +26,16 @@ def update_chart():
         query = "SELECT Price AS timestamp, Close AS value FROM fx_data"  # Adjusted to use 'Price'
     elif selected_indicator == 'Inflation':
         query = "SELECT date AS timestamp, CPI AS value FROM CPI_Inflation"  # Adjusted to use 'date'
+    elif selected_indicator == 'Energy':
+        query = "SELECT timestamp, close AS value FROM energy_sector"  # Energy sector
+    elif selected_indicator == 'Financials':
+        query = "SELECT timestamp, close AS value FROM financial_sector"  # Financials sector
+    elif selected_indicator == 'Industrials':
+        query = "SELECT timestamp, close AS value FROM industrial_sector"  # Industrials sector
+    elif selected_indicator == 'IT':
+        query = "SELECT timestamp, close AS value FROM IT_sector"  # IT sector
+    elif selected_indicator == 'Materials':
+        query = "SELECT timestamp, close AS value FROM materials_sector"  # Materials sector
     else:
         return jsonify({"error": "Invalid indicator"}), 400
 
